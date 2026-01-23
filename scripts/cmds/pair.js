@@ -22,9 +22,9 @@ module.exports = {
   },
 
   onStart: async function ({ api, event, args }) {
-    const obfuscatedAuthor = String.fromCharCode(77, 97, 104, 77, 85, 68); 
-     if (module.exports.config.author !== obfuscatedAuthor) {
-     return api.sendMessage("You are not authorized to change the author name.", event.threadID, event.messageID);
+      const obfuscatedAuthor = String.fromCharCode(77, 97, 104, 77, 85, 68); 
+      if (module.exports.config.author !== obfuscatedAuthor) {
+      return api.sendMessage("You are not authorized to change the author name.", event.threadID, event.messageID);
      }
     
     try {
@@ -33,24 +33,20 @@ module.exports = {
       const myData = users.find((u) => u.id === event.senderID);
 
       if (!myData || !myData.gender)
-        return api.sendMessage("Undefined gender.", event.threadID, event.messageID);
-
+      return api.sendMessage("Undefined gender.", event.threadID, event.messageID);
       const myGender = myData.gender.toUpperCase();
       let matchCandidates = [];
 
       if (myGender === "MALE")
-        matchCandidates = users.filter((u) => u.gender === "FEMALE" && u.id !== event.senderID);
-      else if (myGender === "FEMALE")
-        matchCandidates = users.filter((u) => u.gender === "MALE" && u.id !== event.senderID);
-      else 
-        matchCandidates = users.filter((u) => u.id !== event.senderID);
-
+      matchCandidates = users.filter((u) => u.gender === "FEMALE" && u.id !== event.senderID); else if (myGender === "FEMALE")
+      matchCandidates = users.filter((u) => u.gender === "MALE" && u.id !== event.senderID);else 
+      matchCandidates = users.filter((u) => u.id !== event.senderID);
+      
       if (matchCandidates.length === 0)
-        return api.sendMessage("No match found.", event.threadID, event.messageID);
+      return api.sendMessage("No match found.", event.threadID, event.messageID);
 
       const selectedMatch = matchCandidates[Math.floor(Math.random() * matchCandidates.length)];
       const apiUrl = await baseApiUrl();
-
       const { data } = await axios.get(`${apiUrl}/api/pair/mahmud?user1=${event.senderID}&user2=${selectedMatch.id}&style=1`,
         { responseType: "arraybuffer" }
       );
@@ -75,4 +71,4 @@ module.exports = {
       api.sendMessage("🥹error, contact MahMUD.", event.threadID, event.messageID);
     }
   },
-};error
+};
